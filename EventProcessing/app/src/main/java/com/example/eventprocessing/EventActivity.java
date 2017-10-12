@@ -1,18 +1,18 @@
 package com.example.eventprocessing;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
-import android.text.Html;
+import android.view.inputmethod.InputMethodManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -37,9 +37,11 @@ public class EventActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v){
-
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         switch (v.getId()){
             case R.id.img:
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
                 final AlertDialog.Builder dialog = new AlertDialog.Builder(EventActivity.this);
                 final String[] items = { "拍摄", "从相册选择" };
                 dialog.setTitle("上传头像");
@@ -83,6 +85,7 @@ public class EventActivity extends Activity implements View.OnClickListener {
 //                        })
 //                        .setActionTextColor(Color.parseColor("#3F51B5")).show();
             case R.id.button_signin:
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 if(flag == 1){
                     Snackbar.make(v, "学生注册功能尚未启用", Snackbar.LENGTH_SHORT)
                             .setAction("确定", new View.OnClickListener(){
@@ -107,6 +110,8 @@ public class EventActivity extends Activity implements View.OnClickListener {
                 }
                 break;
             case R.id.button_login:
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
                 TextInputLayout mNumbertext = (TextInputLayout) findViewById(R.id.edit_number);
                 TextInputLayout mPasstext = (TextInputLayout) findViewById(R.id.edit_password);
                 String IdNumber = mNumbertext.getEditText().getText().toString();
@@ -114,15 +119,16 @@ public class EventActivity extends Activity implements View.OnClickListener {
                 Log.d("Idnumber", IdNumber);
                 if(TextUtils.isEmpty(IdNumber)){
                     //Log.d("Idnumber","empty");
-                    mNumbertext.setErrorEnabled(true);
                     mNumbertext.setError("学号不能为空");
                 }
                 else{
                     mNumbertext.setErrorEnabled(false);
                 }
                 if(TextUtils.isEmpty(pass)){
-                    mPasstext.setErrorEnabled(true);
-                    mPasstext.setError(Html.fromHtml("<font color=red>密码不能为空</font>"));
+                    mPasstext.setError("密码不能为空");
+                }
+                else{
+                    mPasstext.setErrorEnabled(false);
                 }
                 if(IdNumber.equals("123456") && pass.equals("6666")){
                     Snackbar.make(v, "登陆成功", Snackbar.LENGTH_SHORT)
@@ -154,8 +160,10 @@ public class EventActivity extends Activity implements View.OnClickListener {
     private class mRadioGrouponClickListener implements RadioGroup.OnCheckedChangeListener {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId){
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             switch(checkedId){
                 case R.id.radio_student:
+                    imm.hideSoftInputFromWindow(group.getWindowToken(), 0);
                     Snackbar.make(group, "您选择了学生", Snackbar.LENGTH_SHORT)
                             .setAction("确定", new View.OnClickListener(){
                                 @Override
@@ -168,6 +176,7 @@ public class EventActivity extends Activity implements View.OnClickListener {
                     flag = 1;
                     break;
                 case R.id.radio_teacher:
+                    imm.hideSoftInputFromWindow(group.getWindowToken(), 0);
                     Snackbar.make(group, "您选择了教职工", Snackbar.LENGTH_SHORT)
                             .setAction("确定", new View.OnClickListener(){
                                 @Override
