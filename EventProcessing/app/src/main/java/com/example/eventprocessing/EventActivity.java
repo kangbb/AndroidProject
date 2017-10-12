@@ -37,9 +37,11 @@ public class EventActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v){
+        //键盘隐藏
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         switch (v.getId()){
             case R.id.img:
+                //键盘隐藏
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
                 final AlertDialog.Builder dialog = new AlertDialog.Builder(EventActivity.this);
